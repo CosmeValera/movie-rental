@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class CustomerTest extends TestCase
 {
-    public function test_customer()
+    public function test_customer(): void
     {
         $customer = new Customer("Bob");
         $customer->addRental(new Rental(new Movie("Jaws", Movie::REGULAR), 2));

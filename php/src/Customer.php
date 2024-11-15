@@ -6,12 +6,13 @@ namespace Kata;
 
 class Customer
 {
-    private array $rentals;
-    private string $name;
-
-    public function __construct(string $name)
-    {
-        $this->name = $name;
+    /**
+     * @param list<Rental> $rentals
+     */
+    public function __construct(
+        private readonly string $name,
+        private array $rentals = [],
+    ) {
     }
 
     public function addRental(Rental $rental): void
