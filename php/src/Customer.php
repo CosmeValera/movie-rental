@@ -3,17 +3,17 @@ namespace Kata;
 
 class Customer
 {
-    private array $_rentals;
-    private mixed $_name;
+    private array $rentals;
+    private mixed $name;
 
-    public function __construct($string)
+    public function __construct(string $name)
     {
-        $this->_name = $string;
+        $this->name = $name;
     }
 
-    public function addRental($param)
+    public function addRental(Rental $rental)
     {
-        $this->_rentals[] = $param;
+        $this->rentals[] = $rental;
     }
 
     public function statement()
@@ -22,12 +22,13 @@ class Customer
         $frequentRenterPoints = 0;
         $result = "Rental Record for " . $this->getName() . "\n";
 
-        foreach ($this->_rentals as $each) {
+        foreach ($this->rentals as $each) {
             $thisAmount = 0;
 
             //determine amounts for each line
             switch ($each->getMovie()->getPriceCode()) {
                 case Movie::REGULAR:
+                    //base price
                     $thisAmount += 2;
                     if ($each->getDaysRented() > 2)
                         $thisAmount += ($each->getDaysRented() - 2) * 1.5;
@@ -36,6 +37,7 @@ class Customer
                     $thisAmount += $each->getDaysRented() * 3;
                     break;
                 case Movie::CHILDRENS:
+                     //base price
                     $thisAmount += 1.5;
                     if ($each->getDaysRented() > 3)
                         $thisAmount += ($each->getDaysRented() - 3) * 1.5;
@@ -63,6 +65,6 @@ class Customer
 
     private function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
 }
