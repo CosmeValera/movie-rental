@@ -24,7 +24,7 @@ class Customer
     {
         $totalAmount = 0;
         $frequentRenterPoints = 0;
-        $result = "Rental Record for " . $this->getName() . "\n";
+        $result = "Rental Record for " . $this->name . "\n";
 
         foreach ($this->rentals as $each) {
             $thisAmount = 0;
@@ -67,10 +67,5 @@ class Customer
         $result .= "You earned " . $frequentRenterPoints . " frequent renter points";
 
         return $result;
-    }
-
-    private function getName(): string
-    {
-        return $this->name;
     }
 }
