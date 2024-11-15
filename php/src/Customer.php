@@ -26,26 +26,26 @@ class Customer
         $frequentRenterPoints = 0;
         $result = "Rental Record for " . $this->name . "\n";
 
-        foreach ($this->rentals as $each) {
+        foreach ($this->rentals as $rental) {
             $thisAmount = 0;
 
-            //determine amounts for each line
-            switch ($each->getMovie()->getPriceCode()) {
+            // determine amounts for each rental
+            switch ($rental->getMovie()->getPriceCode()) {
                 case Movie::REGULAR:
-                    //base price
+                    // base price
                     $thisAmount += 2;
-                    if ($each->getDaysRented() > 2) {
-                        $thisAmount += ($each->getDaysRented() - 2) * 1.5;
+                    if ($rental->getDaysRented() > 2) {
+                        $thisAmount += ($rental->getDaysRented() - 2) * 1.5;
                     }
                     break;
                 case Movie::NEW_RELEASE:
-                    $thisAmount += $each->getDaysRented() * 3;
+                    $thisAmount += $rental->getDaysRented() * 3;
                     break;
                 case Movie::CHILDRENS:
-                    //base price
+                    // base price
                     $thisAmount += 1.5;
-                    if ($each->getDaysRented() > 3) {
-                        $thisAmount += ($each->getDaysRented() - 3) * 1.5;
+                    if ($rental->getDaysRented() > 3) {
+                        $thisAmount += ($rental->getDaysRented() - 3) * 1.5;
                     }
                     break;
             }
@@ -53,12 +53,12 @@ class Customer
             // add frequent renter points
             $frequentRenterPoints++;
             // add bonus for a two day new release rental
-            if ($each->getDaysRented() > 1 && ($each->getMovie()->getPriceCode() === Movie::NEW_RELEASE)) {
+            if ($rental->getDaysRented() > 1 && ($rental->getMovie()->getPriceCode() === Movie::NEW_RELEASE)) {
                 $frequentRenterPoints++;
             }
 
             // show figures for this rental
-            $result .= sprintf("\t%s\t%1.1f\n", $each->getMovie()->getTitle(), $thisAmount);
+            $result .= sprintf("\t%s\t%1.1f\n", $rental->getMovie()->getTitle(), $thisAmount);
             $totalAmount += $thisAmount;
         }
 
