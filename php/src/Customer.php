@@ -20,6 +20,31 @@ class Customer
         $this->rentals[] = $rental;
     }
 
+    public function calculateRentalPrice(Rental $rental): int|float
+    {
+        $thisAmount = 0;
+        // determine amounts for each rental
+        switch ($rental->getMovie()->getPriceCode()) {
+            case Movie::REGULAR:
+                // base price
+                $thisAmount += 2;
+                if ($rental->getDaysRented() > 2) {
+                    $thisAmount += ($rental->getDaysRented() - 2) * 1.5;
+                }
+                break;
+            case Movie::NEW_RELEASE:
+                $thisAmount += $rental->getDaysRented() * 3;
+                break;
+            case Movie::CHILDRENS:
+                // base price
+                $thisAmount += 1.5;
+                if ($rental->getDaysRented() > 3) {
+                    $thisAmount += ($rental->getDaysRented() - 3) * 1.5;
+                }
+                break;
+        }
+        return $thisAmount;
+    }
     public function statement(): string
     {
         $totalAmount = 0;
@@ -27,28 +52,7 @@ class Customer
         $result = "Rental Record for " . $this->name . "\n";
 
         foreach ($this->rentals as $rental) {
-            $thisAmount = 0;
-
-            // determine amounts for each rental
-            switch ($rental->getMovie()->getPriceCode()) {
-                case Movie::REGULAR:
-                    // base price
-                    $thisAmount += 2;
-                    if ($rental->getDaysRented() > 2) {
-                        $thisAmount += ($rental->getDaysRented() - 2) * 1.5;
-                    }
-                    break;
-                case Movie::NEW_RELEASE:
-                    $thisAmount += $rental->getDaysRented() * 3;
-                    break;
-                case Movie::CHILDRENS:
-                    // base price
-                    $thisAmount += 1.5;
-                    if ($rental->getDaysRented() > 3) {
-                        $thisAmount += ($rental->getDaysRented() - 3) * 1.5;
-                    }
-                    break;
-            }
+            $thisAmount = $this->calculateRentalPrice($rental);
 
             // add frequent renter points
             $frequentRenterPoints++;
@@ -68,4 +72,5 @@ class Customer
 
         return $result;
     }
+
 }
