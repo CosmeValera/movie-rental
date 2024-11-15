@@ -1,22 +1,23 @@
 <?php
+
 namespace Kata;
 
 class Customer
 {
     private array $rentals;
-    private mixed $name;
+    private string $name;
 
     public function __construct(string $name)
     {
         $this->name = $name;
     }
 
-    public function addRental(Rental $rental)
+    public function addRental(Rental $rental): void
     {
         $this->rentals[] = $rental;
     }
 
-    public function statement()
+    public function statement(): string
     {
         $totalAmount = 0;
         $frequentRenterPoints = 0;
@@ -30,25 +31,28 @@ class Customer
                 case Movie::REGULAR:
                     //base price
                     $thisAmount += 2;
-                    if ($each->getDaysRented() > 2)
+                    if ($each->getDaysRented() > 2) {
                         $thisAmount += ($each->getDaysRented() - 2) * 1.5;
+                    }
                     break;
                 case Movie::NEW_RELEASE:
                     $thisAmount += $each->getDaysRented() * 3;
                     break;
                 case Movie::CHILDRENS:
-                     //base price
+                    //base price
                     $thisAmount += 1.5;
-                    if ($each->getDaysRented() > 3)
+                    if ($each->getDaysRented() > 3) {
                         $thisAmount += ($each->getDaysRented() - 3) * 1.5;
+                    }
                     break;
             }
 
             // add frequent renter points
             $frequentRenterPoints++;
             // add bonus for a two day new release rental
-            if (($each->getMovie()->getPriceCode() == Movie::NEW_RELEASE) && $each->getDaysRented() > 1)
+            if ($each->getDaysRented() > 1 && ($each->getMovie()->getPriceCode() === Movie::NEW_RELEASE)) {
                 $frequentRenterPoints++;
+            }
 
             // show figures for this rental
             $result .= sprintf("\t%s\t%1.1f\n", $each->getMovie()->getTitle(), $thisAmount);
@@ -60,10 +64,9 @@ class Customer
         $result .= "You earned " . $frequentRenterPoints . " frequent renter points";
 
         return $result;
-
     }
 
-    private function getName()
+    private function getName(): string
     {
         return $this->name;
     }
