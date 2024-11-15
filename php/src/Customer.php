@@ -20,7 +20,7 @@ class Customer
         $this->rentals[] = $rental;
     }
 
-    public function calculateRentalPrice(Rental $rental): int|float
+    public function calculateRentalPrice(Rental $rental): float
     {
         $thisAmount = 0;
         // determine amounts for each rental
